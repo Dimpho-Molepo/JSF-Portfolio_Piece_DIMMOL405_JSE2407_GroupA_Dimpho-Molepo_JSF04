@@ -7,7 +7,9 @@ export const useProductStore = defineStore('product', {
     loading: false,
     error: null,
     selectedCategory: '',
-    selectedSort: ''
+    selectedSort: '',
+    selectedSort: '',
+    currentProduct: null
   }),
 
   actions: {
@@ -32,6 +34,20 @@ export const useProductStore = defineStore('product', {
         this.categories = await response.json()
       } catch (error) {
         console.error('Failed to fetch categories:', error)
+        this.error = error.message
+      }
+    },
+
+    async fetchProductById(id) {
+      this.loading = true
+      try {
+        const response = await fetch(`https://fakestoreapi.com/products/${id}`)
+        if (!response.ok) throw new Error('Failed to fetch product')
+        this.currentProduct = await response.json()
+        this.loading = false
+        this.error = null
+      } catch (error) {
+        this.loading = false
         this.error = error.message
       }
     },
