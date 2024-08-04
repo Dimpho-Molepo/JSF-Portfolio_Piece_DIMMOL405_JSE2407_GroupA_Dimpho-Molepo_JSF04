@@ -16,7 +16,7 @@
             </div>
           </h2>
         </header>
-        <Rating rating="{rating.rate}" />
+        <Rating :rating="rating.rate" :count="rating.count" />
         <div class="text-base line-clamp-2 font-extrabold text-slate-500 leading-snug">
           <h2>R{{ price }}</h2>
         </div>
