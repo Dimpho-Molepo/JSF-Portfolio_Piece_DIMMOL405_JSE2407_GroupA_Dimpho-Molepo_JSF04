@@ -1,7 +1,7 @@
 <template>
   <header class="sticky z-50 top-0">
-    <nav class="bg-gray-500 border-gray-200">
-      <nav class="bg-gray-500 border-gray-200">
+    <nav class="bg-black border-gray-200">
+      <nav class="bg-black border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <a href="/">
             <button class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -39,7 +39,7 @@
 
           <div v-if="!isNavbarOpen" class="w-full md:block md:w-auto" id="navbar-default">
             <ul
-              class="flex flex-col top-10 font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-500 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
+              class="flex flex-col top-10 font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
             >
               <li>
                 <a
@@ -64,7 +64,7 @@
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="file: h-6 w-6 stroke-white cursor-pointer"
+                    class=" h-6 w-6 stroke-white cursor-pointer fill-current  hover:text-blue-700"
                   >
                     <path
                       stroke-linecap="round"
