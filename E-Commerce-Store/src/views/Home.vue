@@ -1,5 +1,5 @@
 <template>
-  <main class=" bg-gray-200">
+  <main >
     <FilterSort />
     <ProductList />
   </main>

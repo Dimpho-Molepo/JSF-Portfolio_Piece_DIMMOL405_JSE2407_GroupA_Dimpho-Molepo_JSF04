@@ -29,7 +29,7 @@
 
     <button
       @click="resetFilters"
-      class="w-[50%] sm:w-auto px-4 py-2 text-sm font-medium text-gray-900 bg-gray-200 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+      class="w-[50%] sm:w-auto px-4 py-2 text-sm font-medium text-gray-900 bg-slate-100 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
     >
       Reset Filters
     </button>
