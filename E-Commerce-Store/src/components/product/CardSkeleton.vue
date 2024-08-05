@@ -1,8 +1,5 @@
 <template>
-  <div
-    role="status"
-    class="flex flex-col max-h-[130rem] cursor-pointer max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
-  >
+  <div role="status" class="flex flex-col max-h-[130rem] cursor-pointer w-[auto] animate-pulse">
     <div class="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded dark:bg-gray-700">
       <svg
         class="w-10 h-10 text-gray-200 dark:text-gray-600"

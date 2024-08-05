@@ -39,11 +39,18 @@
 <script>
 import { useProductStore } from '../stores/productStore'
 
+/**
+ * @module FilterSort
+ * @description Component for filtering and sorting products
+*/
 export default {
   name: 'FilterSort',
   setup() {
     const productStore = useProductStore()
 
+    /**
+     * Resets both category and sort filters
+    */
     function resetFilters() {
       productStore.setSelectedCategory('')
       productStore.setSelectedSort('')

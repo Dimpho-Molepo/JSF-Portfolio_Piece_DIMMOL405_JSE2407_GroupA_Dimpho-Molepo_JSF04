@@ -1,9 +1,9 @@
 <template>
   <div
-    @click="handleClick"
-    class="flex flex-col max-h-[130rem] cursor-pointer max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
+    
+    class="flex flex-col max-h-[130rem]  max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
   >
-    <img class="object-contain h-48 mt-3" :src="image" alt="{title}" />
+    <img @click="handleClick" class="object-contain h-48 mt-3 cursor-pointer" :src="image" alt="{title}" />
 
     <div class="flex-1 flex flex-col p-4">
       <div class="flex-1">
@@ -38,6 +38,10 @@
 <script>
 import Rating from '../Rating.vue'
 
+/**
+ * @module ProductCard
+ * @description Component for displaying a single product card
+*/
 export default {
   name: 'ProductCard',
   components: {
@@ -45,6 +49,9 @@ export default {
   },
   props: ['id', 'title', 'image', 'price', 'category', 'description', 'rating'],
   methods: {
+    /**
+     * Navigates to the product detail page
+     */
     handleClick() {
       this.$router.push(`/products/${this.id}`)
     }

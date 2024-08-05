@@ -1,9 +1,7 @@
 <template>
   <div>
     <div v-if="productStore.loading" class="grid justify-center">
-      <div
-        class="lg:max-h-[130rem] max-w-xl mx-auto grid gap-4 grid-cols-1 lg:grid-cols-4 md:grid-cols-2 items-center lg:max-w-none my-4"
-      >
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         <CardSkeleton v-for="i in 20" :key="i" />
       </div>
     </div>
@@ -27,6 +25,10 @@ import { useProductStore } from '@/stores/productStore'
 import ProductCard from './ProductCard.vue'
 import CardSkeleton from './CardSkeleton.vue'
 
+/**
+ * @module ProductList
+ * @description Component for displaying a list of products
+*/
 export default {
   name: 'ProductList',
   components: {
@@ -36,6 +38,10 @@ export default {
   setup() {
     const productStore = useProductStore()
 
+
+    /**
+     * Fetches products and categories when component is mounted
+    */
     productStore.fetchProducts()
     productStore.fetchCategories()
 
