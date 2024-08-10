@@ -98,18 +98,14 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-  data() {
-    return {
-      isNavbarOpen: false
-    }
-  },
-  methods: {
-    toggleNavbar() {
-      this.isNavbarOpen = !this.isNavbarOpen
-    }
-  }
-}
+<script setup>
+import { ref } from 'vue';
+
+const isNavbarOpen = ref(false);
+/**
+ * Toggle the navbar
+ */
+const toggleNavbar = () => {
+  isNavbarOpen.value = !isNavbarOpen.value;
+};
 </script>

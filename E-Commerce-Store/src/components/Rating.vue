@@ -21,44 +21,36 @@
   </div>
 </template>
 
-<script>
-import { computed } from 'vue'
-
+<script setup>
 /**
  * @module Rating
  * @description Component for displaying product ratings
  */
-export default {
-  name: 'Rating',
-  props: {
-    /** @type {number} */
-    rating: {
-      type: Number,
-      required: true
-    },
-    /** @type {number} */
-    count: {
-      type: Number,
-      default: 0
-    },
-    /** @type {boolean} */
-    showCount: {
-      type: Boolean,
-      default: false
-    }
-  },
-  setup(props) {
-    /**
-     * Computed property that rounds the rating to the nearest integer
-     * @type {import('vue').ComputedRef<number>}
-    */
-    const roundedRating = computed(() => Math.round(props.rating))
+import { computed, defineProps } from 'vue'
 
-    return {
-      roundedRating
-    }
+const props = defineProps({
+  /** @type {number} */
+  rating: {
+    type: Number,
+    required: true
+  },
+  /** @type {number} */
+  count: {
+    type: Number,
+    default: 0
+  },
+  /** @type {boolean} */
+  showCount: {
+    type: Boolean,
+    default: false
   }
-}
+})
+
+/**
+ * Computed property that rounds the rating to the nearest integer
+ * @type {import('vue').ComputedRef<number>}
+ */
+const roundedRating = computed(() => Math.round(props.rating))
 </script>
 
 <style scoped>

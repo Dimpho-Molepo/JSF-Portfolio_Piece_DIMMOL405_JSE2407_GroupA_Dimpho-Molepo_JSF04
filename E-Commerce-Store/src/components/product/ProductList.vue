@@ -20,34 +20,23 @@
   </div>
 </template>
 
-<script>
-import { useProductStore } from '@/stores/productStore'
-import ProductCard from './ProductCard.vue'
-import CardSkeleton from './CardSkeleton.vue'
-
+<script setup>
 /**
  * @module ProductList
  * @description Component for displaying a list of products
-*/
-export default {
-  name: 'ProductList',
-  components: {
-    ProductCard,
-    CardSkeleton
-  },
-  setup() {
-    const productStore = useProductStore()
+ */
+import { useProductStore } from '@/stores/productStore'
+import ProductCard from './ProductCard.vue'
+import CardSkeleton from './CardSkeleton.vue'
+import { onMounted } from 'vue'
 
+const productStore = useProductStore()
 
-    /**
-     * Fetches products and categories when component is mounted
-    */
-    productStore.fetchProducts()
-    productStore.fetchCategories()
-
-    return {
-      productStore
-    }
-  }
-}
+/**
+ * Fetches products and categories when component is mounted
+ */
+onMounted(() => {
+  productStore.fetchProducts()
+  productStore.fetchCategories()
+})
 </script>

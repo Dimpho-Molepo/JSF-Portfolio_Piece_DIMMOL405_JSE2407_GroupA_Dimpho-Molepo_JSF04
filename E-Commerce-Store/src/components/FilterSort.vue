@@ -36,30 +36,20 @@
   </div>
 </template>
 
-<script>
-import { useProductStore } from '../stores/productStore'
-
+<script setup>
 /**
  * @module FilterSort
  * @description Component for filtering and sorting products
-*/
-export default {
-  name: 'FilterSort',
-  setup() {
-    const productStore = useProductStore()
+ */
+import { useProductStore } from '../stores/productStore'
 
-    /**
-     * Resets both category and sort filters
-    */
-    function resetFilters() {
-      productStore.setSelectedCategory('')
-      productStore.setSelectedSort('')
-    }
+const productStore = useProductStore()
 
-    return {
-      productStore,
-      resetFilters
-    }
-  }
+/**
+ * Resets both category and sort filters
+ */
+function resetFilters() {
+  productStore.setSelectedCategory('')
+  productStore.setSelectedSort('')
 }
 </script>

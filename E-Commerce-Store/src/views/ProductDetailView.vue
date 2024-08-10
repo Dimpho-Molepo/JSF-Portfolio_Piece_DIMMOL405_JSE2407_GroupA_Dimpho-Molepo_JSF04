@@ -50,50 +50,34 @@
   </div>
 </template>
 
-<script>
+<script setup>
+/**
+ * @module ProductDetail
+ * @description Component for displaying detailed information about a single product
+*/
 import { useRoute, useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/productStore'
 import { computed, onMounted, ref } from 'vue'
 import Rating from '@/components/Rating.vue'
 import ProductDetailSkeleton from '@/components/product/ProductDetailSkeleton.vue'
 
+const route = useRoute()
+const router = useRouter()
+const productStore = useProductStore()
+const productId = computed(() => route.params.id)
+const product = ref(null)
+
 /**
- * @module ProductDetail
- * @description Component for displaying detailed information about a single product
-*/
-export default {
-  name: 'ProductDetail',
-  components: {
-    Rating,
-    ProductDetailSkeleton
-  },
-  setup() {
-    const route = useRoute()
-    const router = useRouter()
-    const productStore = useProductStore()
-    const productId = computed(() => route.params.id)
-    const product = ref(null)
-
-    /**
-     * Fetches product details when component is mounted
-    */
-    onMounted(async () => {
-      await productStore.fetchProductById(productId.value)
-      product.value = productStore.currentProduct
-    })
-
-    /**
-     * Navigates back to the product list
-    */
-    function goBack() {
-      router.push('/')
-    }
-
-    return {
-      productStore,
-      product,
-      goBack
-    }
-  }
+ * Fetches product details when component is mounted
+ */
+onMounted(async () => {
+  await productStore.fetchProductById(productId.value)
+  product.value = productStore.currentProduct
+})
+/**
+ * Navigates back to the product list
+ */
+function goBack() {
+  router.push('/')
 }
 </script>
