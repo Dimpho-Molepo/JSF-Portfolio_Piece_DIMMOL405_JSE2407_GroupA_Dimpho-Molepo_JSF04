@@ -1,13 +1,14 @@
 <template>
   <div class="flex justify-center items-center bg-slate-300 w-full min-h-screen p-4">
     <form
+    @submit.prevent="handleLogin"
       class="flex flex-col gap-4 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
     >
       <h1>Please enter your login details below:</h1>
       <input
         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="text"
-        v-model="userName"
+        v-model="username"
         placeholder="Username"
         required
       />
@@ -56,7 +57,7 @@
       </div>
 
       <button
-        @click.prevent=""
+        type="submit"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
       >
         Login
@@ -67,12 +68,28 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
+import { useRouter } from 'vue-router'
 
-const userName = ref('')
+const productStore = useAuthenticationStore()
+const router = useRouter()
+
+const username = ref('')
 const password = ref('')
 const showPassword = ref(false)
 
 const togglePassword = () => {
   showPassword.value = !showPassword.value
+}
+
+
+const handleLogin = async () => {
+  const success = await productStore.login(username.value, password.value)
+  if (success) {
+    // alert('Login successful!')
+    router.push('/') // Redirect to home page or dashboard
+  } else {
+    alert(productStore.error)
+  }
 }
 </script>
