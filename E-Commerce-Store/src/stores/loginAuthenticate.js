@@ -1,13 +1,19 @@
 import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-export const useAuthenticationStore = defineStore('product', () => {
-  const decodedToken = ref(null)
+export const useAuthenticationStore = defineStore('loginAuthentication', () => {
+  const decodedToken = ref(localStorage.getItem('token') || null)
   const userLogin = ref(false);
   const user = ref(null)
+  const loading = ref(false)
+  const error = ref(null)
+
+  const isAuthenticated = computed(() => !decodedToken.value)
 
   const login = async (username, password) => {
+    loading.value = true
+    error.value = null
     try {
       const response = await fetch('https://fakestoreapi.com/auth/login', {
         method: 'POST',
@@ -16,30 +22,42 @@ export const useAuthenticationStore = defineStore('product', () => {
         },
         body: JSON.stringify({ username, password })
       })
+
       const data = await response.json();
-    //   console.log(token)
+
       if (data.token) {
         const token = data.token
-        // console.log(token)
         decodedToken.value = jwtDecode(token)
-        // console.log('Decoded token:', decodedToken.value)
         userLogin.value = true 
         user.value = decodedToken.value.user
-        console.log(user.value)
-        // localStorage.setItem()
-        alert('Login successful!')
+        localStorage.setItem('token', decodedToken)
+        loading.value = false
+        return true
       } 
-    //   else {
-    //     alert('Login failed. No token received.')
-    //   }
+      else {
+        throw new Error('Login failed. No token received.')
+      }
     } catch (error) {
       console.error('Login error:', error)
-      alert('Login failed. Please check your credentials.')
+      error.value = 'Login failed. Please check your credentials.'
+      loading.value = false
+      return false
     }
+  }
+
+  const logout = () => {
+    user.value = null
+    decodedToken.value = null
+    localStorage.removeItem('token')
   }
 
   return{
     login,
-    userLogin
+    userLogin,
+    logout,
+    isAuthenticated,
+    decodedToken,
+    error,
+    loading
   }
 })
