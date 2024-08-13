@@ -1,32 +1,40 @@
 <template>
   <div class="flex justify-center items-center bg-slate-300 w-full min-h-screen p-4">
     <form
-    @submit.prevent="handleLogin"
+      @submit.prevent="handleLogin"
       class="flex flex-col gap-4 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-md"
     >
       <h1>Please enter your login details below:</h1>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        type="text"
-        v-model="username"
-        placeholder="Username"
-        required
-      />
+      <div>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          :class="{ 'border-red-500': errors.username }"
+          type="text"
+          v-model="username"
+          placeholder="Username"
+          required
+          @blur="validateUsername"
+        />
+        <p v-if="errors.username" class="text-red-500 text-xs italic mt-1">{{ errors.username }}</p>
+      </div>
       <div class="relative">
         <input
           class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline pr-10"
+          :class="{ 'border-red-500': errors.password }"
           :type="showPassword ? 'text' : 'password'"
           v-model="password"
           placeholder="Password"
+          required
+          @blur="validatePassword"
         />
         <button
           type="button"
-          class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-4"
+          class="absolute inset-y-0 right-2 flex items-center text-sm text-center bg-transparent border-0 cursor-pointer"
           @click="togglePassword"
         >
           <svg
             v-if="!showPassword"
-            class="h-6 w-6 text-gray-500 mb-2.5"
+            class="h-6 w-6 text-gray-500"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +48,7 @@
           </svg>
           <svg
             v-else
-            class="h-6 w-6 text-gray-500 mb-2.5"
+            class="h-6 w-6 text-gray-500"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -54,11 +62,13 @@
             <path d="M5 2L21 18" stroke="currentColor" stroke-width="2" />
           </svg>
         </button>
+        <p v-if="errors.password" class="text-red-500 text-xs italic mt-1">{{ errors.password }}</p>
       </div>
 
       <button
         type="submit"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+        :disabled="!isFormValid"
       >
         Login
       </button>
@@ -67,7 +77,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 import { useRouter } from 'vue-router'
 
@@ -77,19 +87,41 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const showPassword = ref(false)
+const errors = ref({ username: '', password: '' })
 
 const togglePassword = () => {
   showPassword.value = !showPassword.value
 }
 
+const validateUsername = () => {
+  errors.value.username = username.value.trim() === '' ? 'Username is required' : ''
+}
+
+const validatePassword = () => {
+  errors.value.password = password.value.trim() === '' ? 'Password is required' : ''
+}
+
+const isFormValid = computed(() => {
+  return (
+    username.value.trim() !== '' &&
+    password.value.trim() !== '' &&
+    !errors.value.username &&
+    !errors.value.password
+  )
+})
 
 const handleLogin = async () => {
-  const success = await productStore.login(username.value, password.value)
-  if (success) {
-    // alert('Login successful!')
-    router.push('/') // Redirect to home page or dashboard
-  } else {
-    alert(productStore.error)
+  validateUsername()
+  validatePassword()
+
+  if (isFormValid.value) {
+    const success = await productStore.login(username.value, password.value)
+    if (success) {
+      alert('Login successful!')
+      router.push('/')
+    } else {
+      alert(productStore.error)
+    }
   }
 }
 </script>
