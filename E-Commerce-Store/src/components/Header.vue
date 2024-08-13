@@ -64,7 +64,7 @@
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class=" h-6 w-6 stroke-white cursor-pointer fill-current  hover:text-blue-700"
+                    class="h-6 w-6 stroke-white cursor-pointer fill-current hover:text-blue-700"
                   >
                     <path
                       stroke-linecap="round"
@@ -83,12 +83,23 @@
                 </a>
               </li>
               <li>
-                <a
-                  href="login"
-                  class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                >
-                  Login
-                </a>
+                <button>
+                  <a
+                    v-if="!authStore.isAuthenticated"
+                    @click="logout"
+                    href="/login"
+                    class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                  >
+                    Logout
+                  </a>
+                  <a
+                    v-else
+                    href="/login"
+                    class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                  >
+                    Login
+                  </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -99,13 +110,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 
-const isNavbarOpen = ref(false);
+const authStore = useAuthenticationStore()
+const router = useRouter()
+const isNavbarOpen = ref(false)
+
 /**
  * Toggle the navbar
  */
 const toggleNavbar = () => {
-  isNavbarOpen.value = !isNavbarOpen.value;
-};
+  isNavbarOpen.value = !isNavbarOpen.value
+}
+
+const logout = () => {
+  console.log(authStore.isAuthenticated)
+  authStore.logout()
+  router.push('/login')
+}
 </script>
