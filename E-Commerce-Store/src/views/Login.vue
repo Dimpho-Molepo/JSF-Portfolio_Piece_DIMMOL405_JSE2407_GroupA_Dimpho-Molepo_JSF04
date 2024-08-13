@@ -68,11 +68,14 @@
       <button
         type="submit"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-        :disabled="!isFormValid"
+        :disabled="!isFormValid || productStore.loading"
       >
-        Login
+        {{ productStore.loading ? 'Logging in...' : 'Login' }}
       </button>
+
+      <p v-if="productStore.error" class="text-red-500 text-sm">{{ productStore.error }}</p>
     </form>
+ 
   </div>
 </template>
 
@@ -117,8 +120,9 @@ const handleLogin = async () => {
   if (isFormValid.value) {
     const success = await productStore.login(username.value, password.value)
     if (success) {
-      alert('Login successful!')
-      router.push('/')
+
+      const redirectPath = route.query.redirect || '/'
+      router.push(redirectPath)
     } else {
       alert(productStore.error)
     }
