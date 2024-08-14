@@ -3,14 +3,14 @@
     <nav class="bg-black border-gray-200">
       <nav class="bg-black border-gray-200">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-          <a href="/">
+          <router-link to="/">
             <button class="flex items-center space-x-3 rtl:space-x-reverse">
               <img src="/online-shop.png" class="h-8" alt="Flowbite Logo" />
               <span class="self-center text-2xl font-semibold whitespace-nowrap text-white">
                 SwiftCart
               </span>
             </button>
-          </a>
+          </router-link>
           <button
             @click="toggleNavbar"
             data-collapse-toggle="navbar-default"
@@ -42,20 +42,20 @@
               class="flex flex-col top-10 font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-black md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0"
             >
               <li>
-                <a
-                  href="/"
+                <router-link
+                  to="/wishlist"
                   class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
                 >
                   Wishlist
-                </a>
+                </router-link>
               </li>
-              <a href="/">
+              <router-link to="/cart">
                 <li class="hidden lg:block md:block relative">
                   <div class="t-0 absolute left-3 -top-4">
                     <p
                       class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white"
                     >
-                      2
+                      {{ cartStore.totalItems }}
                     </p>
                   </div>
                   <svg
@@ -73,32 +73,34 @@
                     />
                   </svg>
                 </li>
-              </a>
+              </router-link>
               <li>
-                <a
-                  href="/"
-                  class="lg:hidden md:hidden py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                >
-                  Cart
-                </a>
+                <div v-if="authStore.isAuthenticated && isNavbarOpen">
+                  <router-link to="/cart" class="flex items-center">
+                    <span>Cart</span>
+                    <span class="ml-1 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                      {{ cartStore.totalItems }}
+                    </span>
+                  </router-link>
+                </div>
               </li>
               <li>
                 <button>
-                  <a
+                  <router-link
                     v-if="!authStore.isAuthenticated"
                     @click="logout"
-                    href="/login"
+                    to="/login"
                     class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
                   >
                     Logout
-                  </a>
-                  <a
+                  </router-link>
+                  <router-link
                     v-else
-                    href="/login"
+                    to="/login"
                     class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
                   >
                     Login
-                  </a>
+                  </router-link>
                 </button>
               </li>
             </ul>
@@ -113,7 +115,11 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
+import { useCartStore } from '@/stores/cartStore'
+import { computed } from 'vue'
 
+const cartStore = useCartStore()
+const isLoggedIn = computed(() => authStore.isAuthenticated)
 const authStore = useAuthenticationStore()
 const router = useRouter()
 const isNavbarOpen = ref(false)
@@ -126,7 +132,6 @@ const toggleNavbar = () => {
 }
 
 const logout = () => {
-  console.log(authStore.isAuthenticated)
   authStore.logout()
   router.push('/login')
 }
