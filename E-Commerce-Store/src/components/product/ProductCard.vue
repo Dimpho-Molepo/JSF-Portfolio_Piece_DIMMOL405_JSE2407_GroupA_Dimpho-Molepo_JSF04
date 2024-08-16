@@ -2,6 +2,11 @@
   <div
     class="flex flex-col max-h-[130rem] max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
   >
+    <div class="relative">
+      <span class="absolute top-4 left-4 bg-blue-200 text-blue-700 text-xs font-bold py-1 px-2 rounded-lg ring-blue-700/10 ">
+        {{ category }}
+      </span>
+    </div>
     <img
       @click="handleClick"
       class="object-contain h-48 mt-3 cursor-pointer"
@@ -25,20 +30,10 @@
         </div>
       </div>
 
-      <div class="flex mt-1 space-x-2">
-        <div class="justify-start flex-1">
-          <span
-            class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
-          >
-            {{ category }}
-          </span>
-        </div>
-      </div>
-
       <div class="flex mt-3">
         <button
           @click="addToCart"
-          class="flex items-center justify-between w-full px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-200"
+          class="flex items-center justify-between w-full px-4 py-2 bg-blue-400 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200"
         >
           Add to cart
           <svg
@@ -58,6 +53,13 @@
             </g>
           </svg>
         </button>
+
+        <button
+         @click="addToComparison"
+          class="flex-1 px-4 py-2 bg-green-400 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200"
+        >
+          Compare
+        </button>
       </div>
     </div>
   </div>
@@ -68,6 +70,7 @@ import Rating from '../Rating.vue'
 import { useRouter } from 'vue-router'
 import { defineProps } from 'vue'
 import { useCartStore } from '@/stores/cartStore.js'
+import { useComparisonStore } from '@/stores/comparisonStore'
 
 /**
  * @module ProductCard
@@ -98,9 +101,14 @@ const props = defineProps({
   rating: {
     type: Object,
     default: () => ({ rate: 0, count: 0 })
-  }
+  },
+  description: {
+    type: String,
+    required: true
+  },
 })
 
+const comparisonStore = useComparisonStore()
 const router = useRouter()
 const cartStore = useCartStore()
 /**
@@ -116,6 +124,17 @@ const addToCart = () => {
     title: props.title,
     price: props.price,
     image: props.image
+  })
+}
+
+const addToComparison = () => {
+  comparisonStore.addItem({
+    id: props.id,
+    title: props.title,
+    price: props.price,
+    image: props.image,
+    description: props.description,
+    rating: props.rating
   })
 }
 </script>
