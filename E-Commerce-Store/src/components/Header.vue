@@ -43,6 +43,14 @@
             >
               <li>
                 <router-link
+                  to="/comparison"
+                  class="text-white hover:text-gray-300"
+                >
+                  Compare ({{ comparisonStore.products.length }})
+                </router-link>
+              </li>
+              <li>
+                <router-link
                   to="/wishlist"
                   class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
                 >
@@ -116,7 +124,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 import { useCartStore } from '@/stores/cartStore'
-import { computed } from 'vue'
+// import { computed } from 'vue'
+import { useComparisonStore } from '@/stores/comparisonStore'
 
 const cartStore = useCartStore()
 const isLoggedIn = computed(() => authStore.isAuthenticated)
