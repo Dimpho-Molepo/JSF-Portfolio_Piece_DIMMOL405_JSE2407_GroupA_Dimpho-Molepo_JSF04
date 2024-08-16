@@ -37,6 +37,7 @@
           </span>
           <h3 class="text-xl sm:text-2xl font-bold">R{{ product.price }}</h3>
           <button
+            @click="addToCart"
             class="bg-cyan-700 hover:bg-cyan-900 w-full sm:w-auto text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
           >
             Add To Cart
@@ -60,12 +61,14 @@ import { useProductStore } from '@/stores/productStore'
 import { computed, onMounted, ref } from 'vue'
 import Rating from '@/components/Rating.vue'
 import ProductDetailSkeleton from '@/components/product/ProductDetailSkeleton.vue'
+import { useCartStore } from '@/stores/cartStore.js'
 
 const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()
 const productId = computed(() => route.params.id)
 const product = ref(null)
+const cartStore = useCartStore()
 
 /**
  * Fetches product details when component is mounted
@@ -79,5 +82,14 @@ onMounted(async () => {
  */
 function goBack() {
   router.push('/')
+}
+
+const addToCart = () => {
+  cartStore.addItem({
+    id: product.value.id,
+    title: product.value.title,
+    price: product.value.price,
+    image: product.value.image
+  })
 }
 </script>
