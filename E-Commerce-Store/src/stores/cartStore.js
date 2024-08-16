@@ -3,7 +3,6 @@ import { ref, computed } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([])
-  const userId = ref(null)
 
   const addItem = (product) => {
     const existingItem = items.value.find(item => item.id === product.id)
@@ -42,12 +41,11 @@ export const useCartStore = defineStore('cart', () => {
   })
 
   const saveToLocalStorage = () => {
-    localStorage.setItem(`Cart-${userId.value}`, JSON.stringify(items.value))
+    localStorage.setItem(`Cart`, JSON.stringify(items.value))
   }
 
-  const loadFromLocalStorage = (id) => {
-    userId.value = id
-    const savedCart = localStorage.getItem(`cart-${id}`)
+  const loadFromLocalStorage = () => {
+    const savedCart = localStorage.getItem(`Cart`)
     if (savedCart) {
       items.value = JSON.parse(savedCart)
     }
