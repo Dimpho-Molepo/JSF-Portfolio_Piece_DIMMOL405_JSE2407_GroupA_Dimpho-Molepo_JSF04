@@ -5,14 +5,14 @@ export const useComparisonStore = defineStore('comparison', () => {
   const products = ref([])
   const MAX_PRODUCTS = 4
 
-  const addItem = (product) => {
-    if (products.value.length < MAX_PRODUCTS && !products.value.find(item => item.id === product.id)) {
+  const addProduct = (product) => {
+    if (products.value.length < MAX_PRODUCTS && !products.value.find(product => product.id === product.id)) {
       products.value.push(product)
     }
   }
 
-  const removeItem = (productId) => {
-    products.value = products.value.filter(item => item.id !== productId)
+  const removeProduct = (productId) => {
+    products.value = products.value.filter(product => product.id !== productId)
   }
 
   const clearList = () => {
@@ -23,8 +23,8 @@ export const useComparisonStore = defineStore('comparison', () => {
 
   return {
     products,
-    addItem,
-    removeItem,
+    addProduct,
+    removeProduct,
     clearList,
     canAddMore
   }
