@@ -49,13 +49,13 @@
       <button
         type="submit"
         class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out"
-        :disabled="!isFormValid || productStore.loading"
+        :disabled="!isFormValid || loginStore.loading"
       >
-        {{ productStore.loading ? 'Logging in...' : 'Login' }}
+        {{ loginStore.loading ? 'Logging in...' : 'Login' }}
       </button>
 
-      <p v-if="productStore.error" class="text-red-500 text-sm mt-4 text-center">
-        {{ productStore.error }}
+      <p v-if="loginStore.error" class="text-red-500 text-sm mt-4 text-center">
+        {{ loginStore.error }}
       </p>
     </form>
     <Toast />
@@ -68,9 +68,9 @@ import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import Toast from 'primevue/toast'
-import Password from 'primevue/password'
+// import Password from 'primevue/password'
 
-const productStore = useAuthenticationStore()
+const loginStore = useAuthenticationStore()
 const router = useRouter()
 const route = useRoute()
 const toast = useToast()
@@ -106,7 +106,7 @@ const handleLogin = async () => {
   validatePassword()
 
   if (isFormValid.value) {
-    const success = await productStore.login(username.value, password.value)
+    const success = await loginStore.login(username.value, password.value)
     if (success) {
       toast.add({
         severity: 'success',
@@ -114,13 +114,13 @@ const handleLogin = async () => {
         detail: 'Welcome back!',
         life: 3000
       })
-      const redirectPath = route.query.redirect || '/'
+      const redirectPath = loginStore.returnTo || '/'
       router.push(redirectPath)
     } else {
       toast.add({
         severity: 'error',
         summary: 'Login Failed',
-        detail: productStore.error || 'Invalid credentials',
+        detail: loginStore.error || 'Invalid credentials',
         life: 3000
       })
     }
