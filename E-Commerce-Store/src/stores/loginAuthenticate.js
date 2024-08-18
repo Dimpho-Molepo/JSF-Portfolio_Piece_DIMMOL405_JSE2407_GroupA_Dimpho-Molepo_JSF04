@@ -4,12 +4,13 @@ import { ref, computed } from 'vue'
 
 export const useAuthenticationStore = defineStore('loginAuthentication', () => {
   const decodedToken = ref(localStorage.getItem('token') || null)
-  const userLogin = ref(false);
+  const userLogin = ref(false)
   const user = ref(null)
   const loading = ref(false)
   const error = ref(null)
+  const returnTo = ref('/')
 
-  const isAuthenticated = computed(() => !decodedToken.value)
+  const isAuthenticated = computed(() => !!decodedToken.value)
 
   const login = async (username, password) => {
     loading.value = true
@@ -23,18 +24,17 @@ export const useAuthenticationStore = defineStore('loginAuthentication', () => {
         body: JSON.stringify({ username, password })
       })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (data.token) {
         const token = data.token
         decodedToken.value = jwtDecode(token)
-        userLogin.value = true 
+        userLogin.value = true
         user.value = decodedToken.value.user
-        localStorage.setItem('token', decodedToken)
+        localStorage.setItem('token', token)
         loading.value = false
         return true
-      } 
-      else {
+      } else {
         throw new Error('Login failed. No token received.')
       }
     } catch (error) {
@@ -49,15 +49,22 @@ export const useAuthenticationStore = defineStore('loginAuthentication', () => {
     user.value = null
     decodedToken.value = null
     localStorage.removeItem('token')
+    returnTo.value = '/'
   }
 
-  return{
+  const setReturnTo = (path) => {
+    returnTo.value = path
+  }
+
+  return {
     login,
     userLogin,
     logout,
     isAuthenticated,
     decodedToken,
     error,
-    loading
+    loading,
+    setReturnTo,
+    returnTo
   }
 })
