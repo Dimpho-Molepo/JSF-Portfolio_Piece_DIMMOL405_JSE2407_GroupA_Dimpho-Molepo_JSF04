@@ -3,9 +3,12 @@ import Home from '@/views/Home.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 import Login from '@/views/Login.vue'
 import { useAuthenticationStore } from '@/stores/loginAuthenticate'
+import Wishlist from '@/views/Wishlist.vue'
+import Cart from '@/views/Cart.vue'
+import CompareProducts from '@/views/CompareProducts.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
@@ -20,28 +23,33 @@ const router = createRouter({
     {
       path: '/login',
       name: 'Login',
-      component: Login,
-      // meta: { requiresAuth: true }
+      component: Login
     },
-    // {
-    //   path: '/wishlist',
-    //   component: Wishlist,
-    //   meta: { requiresAuth: true }
-    // },
-    // {
-    //   path: '/cart',
-    //   component: Cart,
-    //   meta: { requiresAuth: true }
-    // },
+    {
+      path: '/wishlist',
+      component: Wishlist,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/cart',
+      component: Cart,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/comparison',
+      name: 'CompareProducts',
+      component: CompareProducts,
+      meta: { requiresAuth: true }
+    }
   ]
 })
 
-
 router.beforeEach((to, from, next) => {
   const login = useAuthenticationStore()
-  
-  if (to.matched.some(record => record.meta.requiresAuth) && !login.isAuthenticated) {
-    next({ name: 'Login', query: { redirect: to.fullPath } })
+
+  if (to.matched.some((record) => record.meta.requiresAuth) && !login.isAuthenticated) {
+    login.setReturnTo(to.fullPath)
+    next({ path: '/login', query: { returnTo: to.fullPath } })
   } else {
     next()
   }
