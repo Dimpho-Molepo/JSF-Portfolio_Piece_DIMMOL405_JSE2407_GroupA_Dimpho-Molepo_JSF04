@@ -3,10 +3,41 @@
     class="flex flex-col max-h-[130rem] max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
   >
     <div class="relative">
-      <span class="absolute top-4 left-4 bg-blue-200 text-blue-700 text-xs font-bold py-1 px-2 rounded-lg ring-blue-700/10 ">
+      <span
+        class="absolute top-4 left-4 bg-blue-200 text-blue-700 text-xs font-bold py-1 px-2 rounded-lg ring-blue-700/10"
+      >
         {{ category }}
       </span>
     </div>
+
+    <button
+      @click="toggleWishlist"
+      class="absolute top-2 right-2 p-2 rounded-full focus:outline-none"
+      :class="{ 'bg-blue-500': isWished, 'bg-gray-300': !isWished }"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          v-if="isWished"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        />
+        <path
+          v-else
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+        />
+      </svg>
+    </button>
     <img
       @click="handleClick"
       class="object-contain h-48 mt-3 cursor-pointer"
@@ -55,7 +86,7 @@
         </button>
 
         <button
-         @click="addToComparison"
+          @click="addToComparison"
           class="flex-1 px-4 py-2 bg-green-400 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-300 transition duration-200"
         >
           Compare
@@ -68,9 +99,10 @@
 <script setup>
 import Rating from '../Rating.vue'
 import { useRouter } from 'vue-router'
-import { defineProps } from 'vue'
+import { defineProps, computed } from 'vue'
 import { useCartStore } from '@/stores/cartStore.js'
-import { useComparisonStore } from '@/stores/comparisonStore'
+import { useComparisonStore } from '@/stores/comparisonStore.js'
+import { useWishlistStore } from '@/stores/wishlistStore.js'
 
 /**
  * @module ProductCard
@@ -105,12 +137,13 @@ const props = defineProps({
   description: {
     type: String,
     required: true
-  },
+  }
 })
 
 const comparisonStore = useComparisonStore()
 const router = useRouter()
 const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
 /**
  * Navigates to the product detail page
  */
@@ -128,7 +161,7 @@ const addToCart = () => {
 }
 
 const addToComparison = () => {
-  comparisonStore.addItem({
+  comparisonStore.addProduct({
     id: props.id,
     title: props.title,
     price: props.price,
@@ -136,5 +169,25 @@ const addToComparison = () => {
     description: props.description,
     rating: props.rating
   })
+}
+const isWished = computed(() => {
+  return wishlistStore.products.some((product) => product.id === props.id)
+})
+
+const toggleWishlist = () => {
+  if (isWished.value) {
+    wishlistStore.removeProduct(props.id)
+  } else {
+    wishlistStore.addToWishlist({
+      id: props.id,
+      title: props.title,
+      price: props.price,
+      image: props.image,
+      description: props.description,
+      rating: props.rating,
+      category: props.category
+    })
+  }
+  console.log(`Product ${isWished.value ? 'removed from' : 'added to'} wishlist`)
 }
 </script>
