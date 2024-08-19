@@ -95,7 +95,7 @@
               <li>
                 <button>
                   <router-link
-                    v-if="!authStore.isAuthenticated"
+                    v-if="authStore.isAuthenticated"
                     @click="logout"
                     to="/login"
                     class="block py-2 px-3 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
@@ -128,7 +128,8 @@ import { useCartStore } from '@/stores/cartStore'
 import { useComparisonStore } from '@/stores/comparisonStore'
 
 const cartStore = useCartStore()
-const isLoggedIn = computed(() => authStore.isAuthenticated)
+const comparisonStore = useComparisonStore()
+// const isLoggedIn = computed(() => authStore.isAuthenticated)
 const authStore = useAuthenticationStore()
 const router = useRouter()
 const isNavbarOpen = ref(false)
@@ -142,6 +143,6 @@ const toggleNavbar = () => {
 
 const logout = () => {
   authStore.logout()
-  router.push('/login')
+  router.push('/')
 }
 </script>
