@@ -1,11 +1,11 @@
 <template>
   <header class="sticky z-50 top-0">
-    <nav class="bg-[#ebf5f2] border-b border-gray-200 bg-opacity-95">
+    <nav class="bg-[#ebf5f2] border-b border-gray-200 bg-opacity-95 dark:bg-[#313131] dark:border-gray-900">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <router-link to="/">
           <button class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="/online-shop.png" class="h-8" alt="SwiftCart Logo" />
-            <span class="self-center text-2xl font-bold whitespace-nowrap text-black">
+            <span class="self-center text-2xl font-bold whitespace-nowrap text-black dark:text-white">
               SwiftCart
             </span>
           </button>
@@ -41,11 +41,11 @@
           id="navbar-default"
         >
           <div
-            class="flex flex-col md:flex-row md:space-x-8 items-start md:mt-2 p-4 md:p-0 border border-gray-100 rounded-lg md:border-0"
+            class="flex flex-col md:flex-row md:space-x-8 items-start md:mt-2 p-4 md:p-0 border border-gray-100 rounded-lg md:border-0 dark:text-white"
           >
             <router-link
               to="/comparison"
-              class="flex items-center pb-3 text-black hover:text-gray-700 font-bold"
+              class="flex items-center pb-3 text-black dark:text-white hover:text-gray-700 font-bold"
             >
               <div class="relative flex gap-2">
                 <div class="absolute left-3 -top-4">
@@ -59,8 +59,8 @@
                   class="w-6 h-6 mr-1"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="#000000"
-                  stroke="#000000"
+                  fill="currentColor"
+                  
                 >
                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -77,7 +77,7 @@
 
             <router-link
               to="/wishlist"
-              class="flex items-center pb-3 text-black hover:text-gray-700 font-bold"
+              class="flex items-center pb-3 text-black dark:text-white hover:text-gray-700 font-bold"
             >
               <div class="relative flex gap-2">
                 <div class="absolute left-3 -top-4">
@@ -98,7 +98,7 @@
 
             <router-link
               to="/cart"
-              class="flex items-center pb-3 text-black hover:text-gray-700 font-bold"
+              class="flex items-center pb-3 text-black dark:text-white hover:text-gray-700 font-bold"
             >
               <div class="relative flex">
                 <div class="absolute left-3 -top-4">
@@ -131,18 +131,23 @@
                 v-if="authStore.isAuthenticated"
                 @click="logout"
                 to="/login"
-                class="block py-2 px-1 text-black font-bold rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                class="block py-2 px-1 text-black dark:text-white font-bold rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
               >
                 Logout
               </router-link>
               <router-link
                 v-else
                 to="/login"
-                class="block py-2 px-1 text-black rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                class="block py-2 px-1 text-black dark:text-white rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
               >
                 Login
               </router-link>
             </button>
+            <div
+              class="block py-2 px-1 text-black font-bold rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+            >
+              <ChangeTheme />
+            </div>
           </div>
         </div>
       </div>
@@ -151,12 +156,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 import { useCartStore } from '@/stores/cartStore'
 import { useComparisonStore } from '@/stores/comparisonStore'
 import { useWishlistStore } from '@/stores/wishlistStore'
+import ChangeTheme from '@/components/ChangeTheme.vue'
+import { useThemeStore } from '@/stores/themeStore'
 
 const cartStore = useCartStore()
 const comparisonStore = useComparisonStore()
@@ -176,4 +183,10 @@ const logout = () => {
   authStore.logout()
   router.push('/')
 }
+
+const themeStore = useThemeStore()
+
+onMounted(() => {
+  themeStore.loadTheme()
+})
 </script>
