@@ -6,7 +6,7 @@
       <select
         :value="props.selectedCategory"
         @change="$emit('update:selectedCategory', $event.target.value)"
-        class="w-full sm:w-48 md:w-64 p-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full sm:w-48 md:w-64 p-2 text-sm text-gray-900 bg-slate-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="">All Categories</option>
         <option v-for="category in props.categories" :key="category" :value="category">
@@ -19,7 +19,7 @@
       <select
         :value="props.selectedSort"
         @change="$emit('update:selectedSort', $event.target.value)"
-        class="w-full sm:w-48 md:w-64 p-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full sm:w-48 md:w-64 p-2 text-sm text-gray-900 bg-slate-200 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
       >
         <option value="">Default Sorting</option>
         <option value="lowToHigh">Price: Low to High</option>
@@ -29,12 +29,13 @@
 
     <button
       @click="$emit('reset')"
-      class="w-[50%] sm:w-auto px-4 py-2 text-sm font-medium text-gray-900 bg-slate-100 rounded-lg hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
+      class="w-[50%] sm:w-auto px-4 py-2 text-sm font-medium text-gray-900 bg-slate-300 rounded-lg hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:text-white dark:bg-gray-700 dark:hover:bg-gray-600"
     >
       Reset Filters
     </button>
   </div>
 </template>
+
 
 <script setup>
 /**
