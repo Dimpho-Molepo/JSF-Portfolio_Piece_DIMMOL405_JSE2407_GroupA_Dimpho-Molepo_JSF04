@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center items-center bg-gradient-to-r from-[#f8f9fa] to-[#c0c0c0] w-full min-h-screen p-4 dark:from-gray-600 dark:to-gray-700"
+    class="flex justify-center items-center bg-gradient-to-r from-[#f8f9fa] to-[#7d7d7d] w-full min-h-screen p-4 dark:from-gray-900 dark:to-gray-800"
   >
     <form
       @submit.prevent="handleLogin"
@@ -56,29 +56,37 @@
         {{ loginStore.error }}
       </p>
     </form>
-    <Toast />
+    
   </div>
+  <Toast v-if="showToast" :type="toastType" @closed="closeToast">
+    {{ toastMessage }}
+  </Toast>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
-import { useRouter, useRoute } from 'vue-router'
-import { useToast } from 'primevue/usetoast'
-import Toast from 'primevue/toast'
+import { useRouter } from 'vue-router'
+import Toast from '@/components/Toast.vue';
 
 const loginStore = useAuthenticationStore()
 const router = useRouter()
-const route = useRoute()
-const toast = useToast()
-
+const showToast = ref(false)
+const toastType = ref('success')
+const toastMessage = ref('')
 const username = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const errors = ref({ username: '', password: '' })
 
-const togglePassword = () => {
-  showPassword.value = !showPassword.value
+const showToastNotification = (type, message) => {
+  toastType.value = type
+  toastMessage.value = message
+  showToast.value = true
+}
+
+const closeToast = () => {
+  showToast.value = false
 }
 
 const validateUsername = () => {
@@ -105,21 +113,13 @@ const handleLogin = async () => {
   if (isFormValid.value) {
     const success = await loginStore.login(username.value, password.value)
     if (success) {
-      toast.add({
-        severity: 'success',
-        summary: 'Login Successful',
-        detail: 'Welcome back!',
-        life: 3000
-      })
-      const redirectPath = loginStore.returnTo || '/'
-      router.push(redirectPath)
+      showToastNotification('success', 'Login successful.')
+      setTimeout(() => {
+        const redirectPath = loginStore.returnTo || '/'
+        router.push(redirectPath)
+      }, 1500)
     } else {
-      toast.add({
-        severity: 'error',
-        summary: 'Login Failed',
-        detail: loginStore.error || 'Invalid credentials',
-        life: 3000
-      })
+      showToastNotification('error', 'Login failed. Please check your login details.')
     }
   }
 }
