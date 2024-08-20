@@ -1,16 +1,16 @@
 <template>
   <div
-    class="flex justify-center items-center bg-gradient-to-r from-slate-400 to-slate-500 w-full min-h-screen p-4"
+    class="flex justify-center items-center bg-gradient-to-r from-[#f8f9fa] to-[#c0c0c0] w-full min-h-screen p-4 dark:from-gray-600 dark:to-gray-700"
   >
     <form
       @submit.prevent="handleLogin"
-      class="flex flex-col gap-6 bg-white shadow-lg rounded-lg px-8 pt-8 pb-10 w-full max-w-lg"
+      class="flex flex-col gap-6 bg-white shadow-lg rounded-lg px-8 pt-8 pb-10 w-full max-w-lg dark:bg-gray-800"
     >
-      <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Login to Your Account</h1>
+      <h1 class="text-2xl font-semibold text-gray-800 mb-4 text-center dark:text-white">Login to Your Account</h1>
 
       <div>
         <input
-          class="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ease-in-out"
+          class="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ease-in-out dark:bg-gray-700 dark:text-white dark:border-gray-600"
           :class="{ 'border-red-500': errors.username }"
           type="text"
           v-model="username"
@@ -23,7 +23,7 @@
 
       <div class="relative">
         <input
-          class="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 pr-12 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ease-in-out"
+          class="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 pr-12 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ease-in-out dark:bg-gray-700 dark:text-white dark:border-gray-600"
           :class="{ 'border-red-500': errors.password }"
           :type="showPassword ? 'text' : 'password'"
           v-model="password"
@@ -40,15 +40,13 @@
             v-model="showPassword"
             class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-opacity-25"
           />
-          <label for="showPassword" class="text-gray-700 text-sm cursor-pointer"
-            >Show Password</label
-          >
+          <label for="showPassword" class="text-gray-700 text-sm cursor-pointer dark:text-gray-300">Show Password</label>
         </div>
       </div>
 
       <button
         type="submit"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out dark:bg-blue-500 dark:hover:bg-blue-600"
         :disabled="!isFormValid || loginStore.loading"
       >
         {{ loginStore.loading ? 'Logging in...' : 'Login' }}
@@ -68,7 +66,6 @@ import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
 import Toast from 'primevue/toast'
-// import Password from 'primevue/password'
 
 const loginStore = useAuthenticationStore()
 const router = useRouter()
