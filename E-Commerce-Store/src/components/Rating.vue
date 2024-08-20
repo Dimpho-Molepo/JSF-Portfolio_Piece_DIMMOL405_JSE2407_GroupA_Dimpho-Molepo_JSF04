@@ -3,7 +3,7 @@
     <div class="flex items-center">
       <span v-for="star in 5" :key="star" class="star-rating">
         <svg
-          :class="['w-4 h-4', star <= roundedRating ? 'text-yellow-400' : 'text-gray-300']"
+          :class="['w-4 h-4', star <= roundedRating ? 'text-yellow-400' : 'text-gray-300 dark:text-slate-50']"
           aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
@@ -15,9 +15,9 @@
         </svg>
       </span>
     </div>
-    <p class="ml-2 text-sm font-medium text-gray-500">{{ rating.toFixed(1) }} out of 5</p>
-    <span v-if="showCount" class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full"></span>
-    <span v-if="showCount" class="text-sm font-medium text-gray-500">{{ count }} reviews</span>
+    <p class="ml-2 text-sm font-medium text-gray-500 dark:text-slate-50">{{ rating.toFixed(1) }} out of 5</p>
+    <span v-if="showCount" class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-slate-50"></span>
+    <span v-if="showCount" class="text-sm font-medium text-gray-500 dark:text-slate-50">{{ count }} reviews</span>
   </div>
 </template>
 
