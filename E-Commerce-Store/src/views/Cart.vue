@@ -90,6 +90,7 @@
 
 
 <script setup>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cartStore'
 import Toast from '@/components/Toast.vue';
