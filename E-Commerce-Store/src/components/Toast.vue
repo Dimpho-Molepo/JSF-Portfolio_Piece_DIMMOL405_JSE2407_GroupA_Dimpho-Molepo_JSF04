@@ -35,23 +35,47 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, defineProps, defineEmits } from 'vue'
-
+/**
+ * Define the props for the toast component
+ */
 const props = defineProps({
+  /**
+   * The type of toast to display (success, error, or warning)
+   * @type {String}
+   * @default 'success'
+   * @validator {(value) => ['success', 'error', 'warning'].includes(value)}
+   */
   type: {
     type: String,
     default: 'success',
     validator: (value) => ['success', 'error', 'warning'].includes(value)
   },
+  /**
+   * The duration of the toast in milliseconds
+   * @type {Number}
+   * @default 3000
+   */
   duration: {
     type: Number,
     default: 3000
   }
 })
 
+/**
+ * Define the events emitted by the toast component
+ */
 const emit = defineEmits(['closed'])
+
+/**
+ * Whether the toast is currently visible
+ * @type {Boolean}
+ */
 const visible = ref(true)
 
+/**
+ * Compute the CSS class for the toast based on its type
+ * @returns {String} The CSS class for the toast
+ */
 const toastClass = computed(() => {
   switch (props.type) {
     case 'success':
@@ -65,6 +89,10 @@ const toastClass = computed(() => {
   }
 })
 
+/**
+ * Compute the icon to display for the toast based on its type
+ * @returns {String} The icon to display for the toast
+ */
 const icon = computed(() => {
   switch (props.type) {
     case 'success':
@@ -78,6 +106,9 @@ const icon = computed(() => {
   }
 })
 
+/**
+ * Start the timer to automatically close the toast after the specified duration
+ */
 const startTimer = () => {
   setTimeout(() => {
     visible.value = false
@@ -85,11 +116,17 @@ const startTimer = () => {
   }, props.duration)
 }
 
+/**
+ * Close the toast manually
+ */
 const closeToast = () => {
   visible.value = false
   emit('closed')
 }
 
+/**
+ * Start the timer when the component is mounted
+ */
 onMounted(() => {
   startTimer()
 })
