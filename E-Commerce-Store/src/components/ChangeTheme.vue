@@ -36,12 +36,22 @@
         </svg>
       </div>
     </div>
-    
   </label>
 </template>
 
 <script setup>
+/**
+ * Sets up the theme store
+ *
+ * @script setup
+ */
 import { useThemeStore } from '@/stores/themeStore'
+
+/**
+ * Instance of the theme store
+ *
+ * @type {ReturnType<typeof useThemeStore>}
+ */
 const themeStore = useThemeStore()
 </script>
 
