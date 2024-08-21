@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center">
     <div class="flex items-center">
-      <span v-for="star in 5" :key="star" class="star-rating">
+      <span v-for="star in 5" :key="star" class="inline-block transition duration-200 hover:scale-110">
         <svg
           :class="['w-4 h-4', star <= roundedRating ? 'text-yellow-400' : 'text-gray-300 dark:text-slate-50']"
           aria-hidden="true"
@@ -52,14 +52,3 @@ const props = defineProps({
  */
 const roundedRating = computed(() => Math.round(props.rating))
 </script>
-
-<style scoped>
-.star-rating {
-  display: inline-block;
-  transition: transform 0.2s;
-}
-
-.star-rating:hover {
-  transform: scale(1.2);
-}
-</style>
