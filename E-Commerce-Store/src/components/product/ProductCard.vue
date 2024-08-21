@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col max-h-[130rem] max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-[#f8f9fa] dark:bg-gray-700 border border-slate-300 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
+    class="flex flex-col max-h-[130rem] max-w-80 hover:-translate-y-1 hover:scale-101 duration-300 bg-[#f8f9fa] dark:bg-gray-700 border border-slate-300 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
   >
     <div class="flex justify-between top-3 p-2">
       <button @click="toggleWishlist" class="focus:outline-none">
@@ -55,7 +55,9 @@
           </h2>
         </header>
         <Rating :rating="rating.rate" :count="rating.count" />
-        <div class="text-base line-clamp-2 font-extrabold text-slate-500 dark:text-slate-50 leading-snug">
+        <div
+          class="text-base line-clamp-2 font-extrabold text-slate-500 dark:text-slate-50 leading-snug"
+        >
           <h2>R{{ price }}</h2>
         </div>
       </div>
@@ -101,7 +103,7 @@
             <g id="SVGRepo_iconCarrier">
               <path
                 d="M2 4h9v1H3v15h8v1H2zm10 19h1V2h-1zM8.283 10.283l-.566-.566L4.934 12.5l2.783 2.783.566-.566L6.566 13H11v-1H6.566zM14 12h4.08l-1.54-1.54.92-.92 2.96 2.96-2.96 2.96-.92-.92L18.08 13H14v8h9V4h-9z"
-              ></path>  
+              ></path>
               <path fill="none" d="M0 0h24v24H0z"></path>
             </g>
           </svg>
@@ -116,6 +118,11 @@
 </template>
 
 <script setup>
+/**
+ * @module ProductCard
+ * @description Component for displaying a single product card
+ */
+
 import Rating from '../Rating.vue'
 import { useRouter } from 'vue-router'
 import { defineProps, computed, ref } from 'vue'
@@ -125,66 +132,140 @@ import { useWishlistStore } from '@/stores/wishlistStore.js'
 import Toast from '../Toast.vue'
 
 /**
- * @module ProductCard
- * @description Component for displaying a single product card
+ * Define the props for the product card component
  */
-
 const props = defineProps({
+  /**
+   * The ID of the product
+   * @type {Number}
+   * @required
+   */
   id: {
     type: Number,
     required: true
   },
+  /**
+   * The title of the product
+   * @type {String}
+   * @required
+   */
   title: {
     type: String,
     required: true
   },
+  /**
+   * The image URL of the product
+   * @type {String}
+   * @required
+   */
   image: {
     type: String,
     required: true
   },
+  /**
+   * The price of the product
+   * @type {Number}
+   * @required
+   */
   price: {
     type: Number,
     required: true
   },
+  /**
+   * The category of the product
+   * @type {String}
+   * @required
+   */
   category: {
     type: String,
     required: true
   },
+  /**
+   * The rating of the product
+   * @type {Object}
+   * @default {{ rate: 0, count: 0 }}
+   */
   rating: {
     type: Object,
     default: () => ({ rate: 0, count: 0 })
   },
+  /**
+   * The description of the product
+   * @type {String}
+   * @required
+   */
   description: {
     type: String,
     required: true
   }
 })
 
+/**
+ * Initialize the comparison store
+ */
 const comparisonStore = useComparisonStore()
+
+/**
+ * Initialize the router
+ */
 const router = useRouter()
+
+/**
+ * Initialize the cart store
+ */
 const cartStore = useCartStore()
+
+/**
+ * Initialize the wishlist store
+ */
 const wishlistStore = useWishlistStore()
+
+/**
+ * Whether to show the toast notification
+ * @type {Boolean}
+ */
 const showToast = ref(false)
+
+/**
+ * The type of the toast notification
+ * @type {String}
+ */
 const toastType = ref('success')
+
+/**
+ * The message of the toast notification
+ * @type {String}
+ */
 const toastMessage = ref('')
 
 /**
- * Navigates to the product detail page
+ * Navigate to the product detail page
  */
 const handleClick = () => {
   router.push(`/products/${props.id}`)
 }
 
+/**
+ * Show a toast notification with the specified type and message
+ * @param {String} type The type of the toast notification
+ * @param {String} message The message of the toast notification
+ */
 const showToastNotification = (type, message) => {
   toastType.value = type
   toastMessage.value = message
   showToast.value = true
 }
 
+/**
+ * Close the toast notification
+ */
 const closeToast = () => {
   showToast.value = false
 }
 
+/**
+ * Add the product to the cart
+ */
 const addToCart = () => {
   cartStore.addItem({
     id: props.id,
@@ -195,7 +276,9 @@ const addToCart = () => {
   showToastNotification('success', 'Product added to cart')
 }
 
-
+/**
+ * Add the product to the comparison list
+ */
 const addToComparison = () => {
   comparisonStore.addProduct({
     id: props.id,
@@ -207,10 +290,18 @@ const addToComparison = () => {
   })
   showToastNotification('success', 'Product added to comparison')
 }
+
+/**
+ * Whether the product is in the wishlist
+ * @returns {Boolean} Whether the product is in the wishlist
+ */
 const isWished = computed(() => {
   return wishlistStore.products.some((product) => product.id === props.id)
 })
 
+/**
+ * Toggle the product in the wishlist
+ */
 const toggleWishlist = () => {
   if (isWished.value) {
     wishlistStore.removeProduct(props.id)
