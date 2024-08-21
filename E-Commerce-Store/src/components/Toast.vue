@@ -35,6 +35,7 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, defineProps, defineEmits } from 'vue'
 /**
  * Define the props for the toast component
  */
