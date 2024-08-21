@@ -92,5 +92,7 @@ The project was challenging because I had to learn about `Vue.js` and how to use
 
 This project was a beast that I tried with my all to tame the beast that vue is. The was a lot of challenges in this project to be fully honest and the major one i struggled with the most was definetly styling the components but my collegues helped alot in this aspect, they guidence and overview was greatly needed. 
 
+
+### [YouTube](https://youtu.be/UjNYJcteEfE)
 ## Author
 Dimpho Molepo
