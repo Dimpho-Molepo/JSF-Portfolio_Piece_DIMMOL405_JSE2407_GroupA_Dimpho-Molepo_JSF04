@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-6">
+  <div v-if="wishlistStore.filteredSortedProducts.length > 0" class="container mx-auto p-6">
     <h2 class="text-3xl font-bold text-center mb-8">Wishlist Carousel</h2>
     <div class="overflow-hidden w-full relative" ref="carousel">
       <div class="flex transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
