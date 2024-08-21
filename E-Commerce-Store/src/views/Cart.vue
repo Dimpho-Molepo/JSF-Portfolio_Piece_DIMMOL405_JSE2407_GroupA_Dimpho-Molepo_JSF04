@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-6 bg-gray-100 dark:bg-gray-900">
+  <div class="container mx-auto p-6 bg-gray-100 dark:bg-gray-900 h-[100vh]">
     <h2 class="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">Shopping Cart</h2>
     <div class="bg-white shadow-md rounded-lg p-6 dark:bg-gray-800">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -68,7 +68,7 @@
             </div>
             <button
               @click="clearCart"
-              class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded transition duration-300 dark:bg-blue-600 dark:hover:bg-blue-700"
+              class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded transition duration-300 dark:bg-blue-600 dark:hover:bg-blue-700"
             >
               Clear Cart
             </button>
@@ -76,23 +76,92 @@
         </div>
       </div>
     </div>
+    <button
+      @click="proceedToCheckout"
+      class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition duration-300 dark:bg-blue-500 dark:hover:bg-blue-600"
+    >
+      Proceed to Checkout
+    </button>
   </div>
+  <Toast v-if="showToast" :type="toastType" @closed="closeToast">
+    {{ toastMessage }}
+  </Toast>
 </template>
 
-<script setup>
-import { useCartStore } from '../stores/cartStore'
 
+<script setup>
+import { useRouter } from 'vue-router'
+import { useCartStore } from '../stores/cartStore'
+import Toast from '@/components/Toast.vue';
+
+/**
+ * The message of the toast notification
+ * @type {String}
+ */
+const toastMessage = ref('')
+
+/**
+ * The cart store instance
+ * @type {Object}
+ */
 const cartStore = useCartStore()
 
+/**
+ * The router instance
+ * @type {Object}
+ */
+const router = useRouter()
+
+/**
+ * Update the quantity of an item in the cart
+ * @param {Number} id The ID of the item
+ * @param {Number} quantity The new quantity
+ */
 const updateQuantity = (id, quantity) => {
   cartStore.updateQuantity(id, quantity)
 }
 
+/**
+ * Remove an item from the cart
+ * @param {Number} id The ID of the item
+ */
 const removeItem = (id) => {
   cartStore.removeItem(id)
 }
 
+/**
+ * Clear the entire cart
+ */
 const clearCart = () => {
   cartStore.clearCart()
+}
+
+/**
+ * Show a toast notification with the specified type and message
+ * @param {String} type The type of the toast notification
+ * @param {String} message The message of the toast notification
+ */
+const showToastNotification = (type, message) => {
+  toastType.value = type
+  toastMessage.value = message
+  showToast.value = true
+}
+
+/**
+ * Close the toast notification
+ */
+const closeToast = () => {
+  showToast.value = false
+}
+
+/**
+ * Proceed to the checkout page if the cart is not empty
+ */
+const proceedToCheckout = () => {
+  if (cartStore.totalItems > 0) {
+    router.push('/checkout')
+  } else {
+    showToastNotification('error', 'Your cart is empty')
+  }
 }
 </script>
