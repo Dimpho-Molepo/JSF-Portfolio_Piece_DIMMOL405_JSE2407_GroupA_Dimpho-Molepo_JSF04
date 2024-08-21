@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto p-6 bg-gray-100">
+  <div class="container mx-auto p-6 ">
     <h2 class="text-3xl font-bold text-center mb-8">Wishlist</h2>
     <FilterSort
       :categories="wishlistStore.categories"
@@ -26,17 +26,30 @@ import { useWishlistStore } from '../stores/wishlistStore'
 import ProductCard from '@/components/product/ProductCard.vue'
 import FilterSort from '@/components/FilterSort.vue'
 
+/**
+ * Wishlist store instance
+ * @type {import('../stores/wishlistStore').default}
+ */
 const wishlistStore = useWishlistStore()
 
+/**
+ * Clears the wishlist
+ */
 const clearWishlist = () => {
   wishlistStore.clearWishlist()
 }
 
+/**
+ * Resets the filters to their default state
+ */
 const resetFilters = () => {
   wishlistStore.selectedCategory = ''
   wishlistStore.selectedSort = ''
 }
 
+/**
+ * Loads the wishlist from local storage on mount
+ */
 onMounted(() => {
   wishlistStore.loadFromLocalStorage()
 })
