@@ -55,7 +55,7 @@
     </div>
     <button
       @click="clearList"
-      class="mt-6 bg-red-800 text-white px-6 py-2 rounded-lg hover:bg-red-900 transition duration-200"
+      class="mt-6 bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition duration-200"
     >
       Clear Comparison List
     </button>
@@ -63,24 +63,52 @@
 </template>
 
 <script setup>
+/**
+ * @module Comparison
+ * @description Component for managing the comparison list
+ */
+
 import { useComparisonStore } from '@/stores/comparisonStore'
 import { useRouter } from 'vue-router'
 
-const comparisonStore = useComparisonStore()
+
+/**
+ * Instance of the comparison store
+ * @type {ReturnType<typeof useComparisonStore>}
+ */
+ const comparisonStore = useComparisonStore()
+
+/**
+ * Instance of the router
+ * @type {ReturnType<typeof useRouter>}
+ */
 const router = useRouter()
 
+/**
+ * Removes a product from the comparison list
+ * @function
+ * @param {string} productId - The ID of the product to remove
+ */
 const removeProduct = (productId) => {
   comparisonStore.removeProduct(productId)
 }
 
+/**
+ * Clears the comparison list
+ * @function
+ */
 const clearList = () => {
   comparisonStore.clearList()
 }
 
 /**
  * Navigates back to the product list
+ * @function
  */
- function goBack() {
+function goBack() {
+  /**
+   * Pushes the user to the product list page
+   */
   router.push('/')
 }
 </script>
