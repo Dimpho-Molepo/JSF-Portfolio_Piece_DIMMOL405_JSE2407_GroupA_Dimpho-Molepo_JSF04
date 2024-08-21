@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref([])
@@ -50,7 +50,11 @@ export const useCartStore = defineStore('cart', () => {
       items.value = JSON.parse(savedCart)
     }
   }
-
+  
+  onMounted(() => {
+    loadFromLocalStorage()
+  })
+  
   return {
     items,
     addItem,
