@@ -85,11 +85,28 @@ import { useCartStore } from '@/stores/cartStore'
 import { useAuthenticationStore } from '@/stores/loginAuthenticate'
 import { useRouter } from 'vue-router'
 
-
+/**
+ * The Vue Router instance
+ * @type {Object}
+ */
 const router = useRouter()
+
+/**
+ * The cart store
+ * @type {Object}
+ */
 const cartStore = useCartStore()
+
+/**
+ * The authentication store
+ * @type {Object}
+ */
 const authStore = useAuthenticationStore()
 
+/**
+ * The checkout form data
+ * @type {Object}
+ */
 const checkoutForm = ref({
   name: '',
   email: '',
@@ -97,7 +114,9 @@ const checkoutForm = ref({
   paymentMethod: 'paypal'
 })
 
-// Populate the checkout form with the user's information
+/**
+ * Populate the checkout form with the user's information when the component is mounted
+ */
 onMounted(() => {
   if (authStore.isAuthenticated) {
     authStore.fetchUserInfo().then(() => {
@@ -108,6 +127,9 @@ onMounted(() => {
   }
 })
 
+/**
+ * Submit the order and clear the cart
+ */
 const submitOrder = () => {
   console.log('Order submitted:', checkoutForm.value)
   cartStore.clearCart()

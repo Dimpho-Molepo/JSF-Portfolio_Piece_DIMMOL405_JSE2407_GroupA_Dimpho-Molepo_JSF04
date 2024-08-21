@@ -30,12 +30,34 @@
 import { useRouter } from 'vue-router'
 import { useCartStore } from '@/stores/cartStore'
 
+/**
+ * The Vue Router instance
+ * @type {Object}
+ */
 const router = useRouter()
+
+/**
+ * The cart store
+ * @type {Object}
+ */
 const cartStore = useCartStore()
 
+/**
+ * The order number
+ * @type {Number}
+ */
 const orderNumber = 123456
+
+/**
+ * The total cost of the cart
+ * @type {Number}
+ */
 const total = cartStore.totalCost
 
+/**
+ * Navigate to the orders page
+ * @returns {void}
+ */
 const goToOrders = () => {
   router.push('/orders')
 }

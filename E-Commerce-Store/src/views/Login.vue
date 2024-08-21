@@ -69,34 +69,100 @@ import { useAuthenticationStore } from '../stores/loginAuthenticate.js'
 import { useRouter } from 'vue-router'
 import Toast from '@/components/Toast.vue';
 
+/**
+ * The authentication store
+ * @type {Object}
+ */
 const loginStore = useAuthenticationStore()
+
+/**
+ * The Vue Router instance
+ * @type {Object}
+ */
 const router = useRouter()
+
+/**
+ * Whether to show the toast notification
+ * @type {Boolean}
+ */
 const showToast = ref(false)
+
+/**
+ * The type of toast notification (success or error)
+ * @type {String}
+ */
 const toastType = ref('success')
+
+/**
+ * The message to display in the toast notification
+ * @type {String}
+ */
 const toastMessage = ref('')
+
+/**
+ * The username input field
+ * @type {String}
+ */
 const username = ref('')
+
+/**
+ * The password input field
+ * @type {String}
+ */
 const password = ref('')
+
+/**
+ * Whether to show the password input field
+ * @type {Boolean}
+ */
 const showPassword = ref(false)
+
+/**
+ * The error messages for the form fields
+ * @type {Object}
+ */
 const errors = ref({ username: '', password: '' })
 
+/**
+ * Show a toast notification with a message
+ * @param {String} type The type of notification (success or error)
+ * @param {String} message The message to display
+ * @returns {void}
+ */
 const showToastNotification = (type, message) => {
   toastType.value = type
   toastMessage.value = message
   showToast.value = true
 }
 
+/**
+ * Close the toast notification
+ * @returns {void}
+ */
 const closeToast = () => {
   showToast.value = false
 }
 
+/**
+ * Validate the username input field
+ * @returns {void}
+ */
 const validateUsername = () => {
   errors.value.username = username.value.trim() === '' ? 'Username is required' : ''
 }
 
+/**
+ * Validate the password input field
+ * @returns {void}
+ */
 const validatePassword = () => {
   errors.value.password = password.value.trim() === '' ? 'Password is required' : ''
 }
 
+/**
+ * Whether the form is valid
+ * @returns {Boolean} Whether the form is valid
+ */
 const isFormValid = computed(() => {
   return (
     username.value.trim() !== '' &&
@@ -106,6 +172,10 @@ const isFormValid = computed(() => {
   )
 })
 
+/**
+ * Handle the login form submission
+ * @returns {void}
+ */
 const handleLogin = async () => {
   validateUsername()
   validatePassword()
