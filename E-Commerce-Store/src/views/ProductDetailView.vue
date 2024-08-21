@@ -63,28 +63,69 @@ import Rating from '@/components/Rating.vue'
 import ProductDetailSkeleton from '@/components/product/ProductDetailSkeleton.vue'
 import { useCartStore } from '@/stores/cartStore.js'
 
+/**
+ * @type {import('vue-router').Route}
+ * @description The current route
+ */
 const route = useRoute()
+
+/**
+ * @type {import('vue-router').Router}
+ * @description The router instance
+ */
 const router = useRouter()
+
+/**
+ * @type {import('@/stores/productStore').default}
+ * @description The product store instance
+ */
 const productStore = useProductStore()
+
+/**
+ * @type {computedRef<string>}
+ * @description The ID of the current product
+ */
 const productId = computed(() => route.params.id)
+
+/**
+ * @type {ref<null|{id: number, title: string, price: number, image: string}>}
+ * @description The current product
+ */
 const product = ref(null)
+
+/**
+ * @type {import('@/stores/cartStore').default}
+ * @description The cart store instance
+ */
 const cartStore = useCartStore()
 
 /**
  * Fetches product details when component is mounted
+ * @async
  */
 onMounted(async () => {
   await productStore.fetchProductById(productId.value)
   product.value = productStore.currentProduct
 })
+
 /**
  * Navigates back to the product list
  */
 function goBack() {
+  /**
+   * @description Pushes the root route to the router
+   */
   router.push('/')
 }
 
-const addToCart = () => {
+/**
+ * Adds the current product to the cart
+ */
+function addToCart() {
+  /**
+   * @description Adds an item to the cart store
+   * @param {{ id: number, title: string, price: number, image: string }} item
+   */
   cartStore.addItem({
     id: product.value.id,
     title: product.value.title,
