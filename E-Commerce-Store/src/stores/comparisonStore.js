@@ -6,7 +6,7 @@ export const useComparisonStore = defineStore('comparison', () => {
   const MAX_PRODUCTS = 4
 
   const addProduct = (product) => {
-    if (products.value.length < MAX_PRODUCTS && !products.value.find(product => product.id === product.id)) {
+    if (products.value.length < MAX_PRODUCTS && !products.value.find(p => p.id === product.id)) {
       products.value.push(product)
     }
   }
