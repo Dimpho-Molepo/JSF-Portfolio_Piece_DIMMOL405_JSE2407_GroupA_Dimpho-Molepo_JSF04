@@ -16,30 +16,57 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+/**
+ * Import necessary dependencies from Vue and the wishlist store
+ */
+ import { ref, computed, onMounted } from 'vue'
 import { useWishlistStore } from '../stores/wishlistStore'
 import ProductCard from '@/components/product/ProductCard.vue'
 
+/**
+ * Initialize the wishlist store
+ */
 const wishlistStore = useWishlistStore()
+
+/**
+ * Initialize the current slide index
+ */
 const currentSlide = ref(0)
+
+/**
+ * Define the number of items to display per slide
+ */
 const itemsPerSlide = 4
 
+/**
+ * Compute the maximum number of slides based on the number of products in the wishlist
+ * @returns {number} The maximum number of slides
+ */
 const maxSlides = computed(() => {
   return Math.ceil(wishlistStore.filteredSortedProducts.length / itemsPerSlide)
 })
 
+/**
+ * Navigate to the next slide
+ */
 const nextSlide = () => {
   if (currentSlide.value < maxSlides.value - 1) {
     currentSlide.value++
   }
 }
 
+/**
+ * Navigate to the previous slide
+ */
 const prevSlide = () => {
   if (currentSlide.value > 0) {
     currentSlide.value--
   }
 }
 
+/**
+ * Load the wishlist from local storage when the component is mounted
+ */
 onMounted(() => {
   wishlistStore.loadFromLocalStorage()
 })
