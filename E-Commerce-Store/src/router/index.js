@@ -6,6 +6,8 @@ import { useAuthenticationStore } from '@/stores/loginAuthenticate'
 import Wishlist from '@/views/Wishlist.vue'
 import Cart from '@/views/Cart.vue'
 import CompareProducts from '@/views/CompareProducts.vue'
+import Checkout from '@/views/Checkout.vue'
+import ConfirmOrder from '@/views/ConfirmOrder.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -39,6 +41,18 @@ const router = createRouter({
       path: '/comparison',
       name: 'CompareProducts',
       component: CompareProducts,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/checkout',
+      name: 'Checkout',
+      component: Checkout,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/order-confirmation',
+      name: 'ConfirmOrder',
+      component: ConfirmOrder,
       meta: { requiresAuth: true }
     }
   ]
