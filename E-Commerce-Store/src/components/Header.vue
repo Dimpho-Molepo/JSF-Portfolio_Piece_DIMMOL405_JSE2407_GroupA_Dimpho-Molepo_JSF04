@@ -1,11 +1,15 @@
 <template>
   <header class="sticky z-50 top-0">
-    <nav class="bg-[#ebf5f2] border-b border-gray-200 bg-opacity-95 dark:bg-[#313131] dark:border-gray-900">
+    <nav
+      class="bg-[#ebf5f2] border-b border-gray-200 bg-opacity-95 dark:bg-opacity-95 dark:bg-[#313131] dark:border-gray-900"
+    >
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <router-link to="/">
           <button class="flex items-center space-x-3 rtl:space-x-reverse">
             <img src="/online-shop.png" class="h-8" alt="SwiftCart Logo" />
-            <span class="self-center text-2xl font-bold whitespace-nowrap text-black dark:text-white">
+            <span
+              class="self-center text-2xl font-bold whitespace-nowrap text-black dark:text-white"
+            >
               SwiftCart
             </span>
           </button>
@@ -13,7 +17,7 @@
         <button
           @click="toggleNavbar"
           type="button"
-          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-white rounded-lg md:hidden hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-200"
           aria-controls="navbar-default"
           :aria-expanded="isNavbarOpen"
         >
@@ -24,6 +28,7 @@
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 17 14"
+            stroke="currentColor"
           >
             <path
               stroke="currentColor"
@@ -60,7 +65,6 @@
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
-                  
                 >
                   <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                   <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -138,7 +142,7 @@
               <router-link
                 v-else
                 to="/login"
-                class="block py-2 px-1 text-black dark:text-white rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                class="block py-2 px-1 text-black dark:text-white font-bold rounded hover:bg-gray-700 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
               >
                 Login
               </router-link>
@@ -165,27 +169,66 @@ import { useWishlistStore } from '@/stores/wishlistStore'
 import ChangeTheme from '@/components/ChangeTheme.vue'
 import { useThemeStore } from '@/stores/themeStore'
 
+/**
+ * Cart store instance
+ * @type {import('@/stores/cartStore').default}
+ */
 const cartStore = useCartStore()
+
+/**
+ * Comparison store instance
+ * @type {import('@/stores/comparisonStore').default}
+ */
 const comparisonStore = useComparisonStore()
+
+/**
+ * Authentication store instance
+ * @type {import('../stores/loginAuthenticate.js').default}
+ */
 const authStore = useAuthenticationStore()
+
+/**
+ * Vue Router instance
+ * @type {import('vue-router').default}
+ */
 const router = useRouter()
+
+/**
+ * Whether the navbar is open
+ * @type {ref<boolean>}
+ */
 const isNavbarOpen = ref(false)
+
+/**
+ * Wishlist store instance
+ * @type {import('@/stores/wishlistStore').default}
+ */
 const wishlistStore = useWishlistStore()
 
 /**
- * Toggle the navbar
+ * Toggles the navbar open or closed
  */
 const toggleNavbar = () => {
   isNavbarOpen.value = !isNavbarOpen.value
 }
 
+/**
+ * Logs the user out and redirects to the home page
+ */
 const logout = () => {
   authStore.logout()
   router.push('/')
 }
 
+/**
+ * Theme store instance
+ * @type {import('@/stores/themeStore').default}
+ */
 const themeStore = useThemeStore()
 
+/**
+ * Loads the theme on mount
+ */
 onMounted(() => {
   themeStore.loadTheme()
 })
